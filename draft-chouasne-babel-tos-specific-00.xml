@@ -52,16 +52,32 @@ support TOS-specific routing. This version is using mandatory sub-TLVs.</t>
 
 <section title="Introduction and background">
 
-<t>The Type of Service (ToS) is a field of the IPV4 header. It is used to indicate
-the type of routing a packet needs (for example, low-delay or high throughput).</t>
-<t>ToS-specific routing has been implemented for various protocols, as described in <xref target="TOS-ROUTING"/></t>
-<t>This document defines an extension to the Babel protocol that allows routers
-to discover routes corresponding to a certain ToS. It enables packets to be routed
-according to their ToS field.</t>
+<t>The Type of Service (ToS) or Differentiated Services Code Point (DSCP)
+is a field of the IPv4 and IPv6 headers that can be used to request
+different per-hop behaviour when forwarding IP packets with identical
+source and destination.  The most common application of the ToS field is
+to request different queueing policies (priority, drop probability, etc.)
+from an AQM.</t>
 
-<t>This extension defines an extension to the base Babel protocol defined in 
-<xref target="BABEL"/>. It is compatible and interoperable with it.</t>
+<t>A slightly less common application of the ToS field is to consider it
+when performing a routing decision.  A router able to perform ToS-specific
+routing maintains a routing table which instead of being merely indexed by
+destination prefixes is indexed by pairs of a prefix and a ToS value.  In
+order to be routed according to a given entry in the routing table, it
+must match not only the destination prefix but also the ToS value.
+ToS-specific forwarding is described in more detail in Section ???.</t>
 
+<t>Just like ordinary routes, ToS-specific routes can be installed
+manually but are more commonly installed by a dynamic routing protocol.
+This document specifies an extension to the Babel routing protocol [BABEL]
+that allows it to carry ToS-specific routes.  This extension considers the
+ToS field as an opaque value that is only compared for equality, but
+ignores the two bits that have been reserved for Explicit Congestion
+Notification (ECN) [RFC3168], and is therefore compatible with the
+defintion of the ToS field used by DSCP [DSCP].</t>
+
+<t>The extended protocol remains interoperable with the unextended Babel
+protocol in a sense made precise in Section ???.</t>
 
 </section>
 
