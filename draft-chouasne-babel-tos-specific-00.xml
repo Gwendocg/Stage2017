@@ -147,10 +147,10 @@ Request or Seqno Request.</t>
 <t>The ToS sub-TLV is defined as follow:</t>
 
 <figure><artwork><![CDATA[
-0                   1                   2        
-0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4
+ 0                   1                   2        
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|  Type  = TBD  |    Length     |      ToS      |
+|  Type  = TBD  |    Length     |    ToS    |Res|
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ]]></artwork></figure>
 
@@ -161,6 +161,7 @@ Request or Seqno Request.</t>
 <t hangText="Length">The length of the body, exclusive of the Type and Length
              fields. It MUST be set to 1.</t>
 <t hangText="ToS">The ToS value of the ToS-specific route</t>
+<t hangText="Res">Reserved field that SHOULD be set to 0.</t>
 </list>
 </t>
 <t>The value TBD has the mandatory bit set to 1 and this sub-TLV must
@@ -223,12 +224,18 @@ and other versions of Babel.</t>
 
 <section title="ToS interpretation">
 
-<t>Several interpretations have been defined for the ToS field. The ToS field
-is opaque to this extension hence, it is compatible with all known and defined
-interpretations. In particular, it is compatible with the Differentiated 
-Service Field interpretation, defined in RFC 2474, the previous interpretation
-described in RFC 791, called IP Precedence, and the ECN protocol, described
-in RFC 3168.</t>
+<t>Several interpretations have been defined for the ToS field. </t>
+
+<t>The ToS field is opaque to this extension. Hence, it is compatible with all 
+extensions that don't use the last two bits of the field. To this day, 
+it is the case of all known and defined interpretations. In particular,
+it is compatible with the Differentiated Service Field interpretation (DSCP),
+defined in RFC 2474, the previous interpretation described in RFC 791, 
+called IP Precedence, and the ECN protocol, described in RFC 3168.</t>
+
+<t>In the case of the DSCP interpretation, one must note that a packet 
+with a DSCP value will follow the route with the ToS being four times
+this value.</t>
 
 </section>
 
