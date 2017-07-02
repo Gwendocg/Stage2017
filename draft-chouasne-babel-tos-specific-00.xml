@@ -59,19 +59,22 @@ source and destination. The most common application of the ToS field is
 to request different queueing policies (priority, drop probability, etc.)
 from an AQM.</t>
 
-<t>A slightly less common application of the ToS field is to consider it
-when performing a routing decision.  A router able to perform ToS-specific
-routing maintains a routing table which instead of being merely indexed by
-destination prefixes is indexed by pairs of a prefix and a ToS value.  In
-order to be routed according to a given entry in the routing table, it
-must match not only the destination prefix but also the ToS value.
-ToS-specific forwarding is described in more detail in Section 3.5.</t>
+<t>A slightly less common application of the ToS field is to take it into
+account in addition to the destination address when performing a routing
+decision.  For example, a router that has a low-latency default route with
+high monetary cost might announce it with a "low-latency" ToS, and thus
+avoid carrying ordinary best-effort traffic over the expensive route.
+A router that performs ToS-specific routing maintains a routing table
+which instead of being merely indexed by destination prefixes is indexed
+by pairs of a prefix and a ToS value.  In order to be routed according to
+a given entry in the routing table, a packet must match not only the
+destination prefix but also the ToS value.  ToS-specific forwarding is
+described in more detail in Section 3.5.</t>
 
 <t>Just like ordinary routes, ToS-specific routes can be installed
 manually but are more commonly installed by a dynamic routing protocol.
 This document specifies an extension to the Babel routing protocol [BABEL]
-that allows it to carry ToS-specific routes, following the extension
-mechanisms defined for Babel in [BABEL-EXT]. This extension considers the
+that allows it to carry ToS-specific routes. This extension considers the
 ToS field as an opaque value that is only compared for equality, but
 ignores the two bits that have been reserved for Explicit Congestion
 Notification (ECN) [RFC3168], and is therefore compatible with the
@@ -372,15 +375,6 @@ of the base protocol.</t>
    <seriesInfo name="Internet-Draft" value="draft-chroboczek-babel-rfc6126bis-00"/>
    <format type="TXT" target="http://www.ietf.org/internet-drafts/draft-chroboczek-babel-rfc6126bis-00.txt"/>
 </reference>
-
-<reference anchor="BABEL-EXT"><front>
-<title>Extension Mechanism for the Babel Routing Protocol</title>
-<author fullname="Juliusz Chroboczek" initials="J." surname="Chroboczek"/>
-<date day="28" month="May" year="2015"/>
-</front>
-<seriesInfo name="RFC" value="7557"/>
-</reference>
-
 </references>
 
 <references title="Informative References">
