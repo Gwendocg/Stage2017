@@ -337,13 +337,6 @@ in Section 3.5.5 of [BABEL]</t>
 
 </section>
 
-<section title="todos">
-
-<t>Compression</t>
-<t>Wildcard requests</t>
-
-</section>
-
 <section title="IANA Considerations">
 
 <t>IANA is instructed to add the following entry to the "Babel sub-TLV type"
