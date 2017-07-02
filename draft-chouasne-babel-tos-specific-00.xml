@@ -69,9 +69,9 @@ ToS-specific forwarding is described in more detail in Section 3.5.</t>
 
 <t>Just like ordinary routes, ToS-specific routes can be installed
 manually but are more commonly installed by a dynamic routing protocol.
-This document specifies an extension to the Babel routing protocol [BABEL]
+This document specifies an extension to the Babel routing protocol <xref target="BABEL"/>
 that allows it to carry ToS-specific routes, following the extension
-mechanisms defined for Babel in [BABEL-EXT]. This extension considers the
+mechanisms defined for Babel in <xref target="BABEL-EXT"/>. This extension considers the
 ToS field as an opaque value that is only compared for equality, but
 ignores the two bits that have been reserved for Explicit Congestion
 Notification (ECN) [RFC3168], and is therefore compatible with the
@@ -144,7 +144,7 @@ Section 3.2.4, needs to be extended with the following field:
 It turns regular Updates, Route Requests and Seqno Requests into ToS-specific 
 Updates, Route Requests and Seqno Requests. Other TLVs MUST NOT be sent with
 this sub-TLV attached. If any are received, they will be silently ignored, 
-as described in Section 4.4 of [BABEL].</t>
+as described in Section 4.4 of <xref target="BABEL"/>.</t>
 
 <t>A node MUST send ToS-specific Update, Route Request and Seqno Request if the 
 route they advertise is ToS-specific.  Otherwise, a node MUST send non-ToS-specific
@@ -177,7 +177,7 @@ therefore be handled in accordance with Section 4.4 of <xref target="BABEL"/>. <
 <section title="ToS-specific Messages">
 
 <t>This section describes the handling of ToS-specific messages.</t>
-<t>Compression is as described in Section 4.5 of the original protocol [BABEL]</t>
+<t>Compression is as described in Section 4.5 of the original protocol <xref target="BABEL"/></t>
 
 <section title="Updates">
 
@@ -204,7 +204,7 @@ doesn't exist, it MUST send a ToS-specific retraction for that prefix.</t>
 
 <t>When a node implementing this extension receives a wildcard Route Request, 
 it SHOULD send a full routing table dump, as described in Section 3.8.1.1
-of [BABEL]. Therefore, it SHOULD also dump its ToS-specific routes.</t>
+of <xref target="BABEL"/>. Therefore, it SHOULD also dump its ToS-specific routes.</t>
 
 </section>
 
@@ -259,7 +259,7 @@ MUST be filled accordingly, as described in Section 4.1.3 of <xref target="BABEL
 <section title="Interaction with non-Tos-specific Babel">
 
 <t>The encoding of ToS-specific Updates and Requests is using a reserved sub-TLV. 
-This means that, as defined in section 4.4 of [BABEL], they will be ignored 
+This means that, as defined in section 4.4 of <xref target="BABEL"/>, they will be ignored 
 by nodes that don't implement this extension, which means that non-ToS-specific nodes
 will not treat ToS-specific routes.</t>
 
@@ -331,7 +331,7 @@ the packet should follow the non-ToS-specific route. When a ToS-specific
 route is retracted while the router has another non-ToS-specific route, 
 packets should follow this non-ToS-specific route as fast as possible, 
 to avoid more delay. Hence, it is RECOMMENDED to use the algorithm described 
-in Section 3.5.5 of [BABEL]</t>
+in Section 3.5.5 of <xref target="BABEL"/></t>
 
 </section>
 
@@ -369,8 +369,8 @@ of the base protocol.</t>
       <author initials="J" surname="Chroboczek" fullname="Juliusz Chroboczek"><organization/></author>
       <date month="July" day="8" year="2016"/>
    </front>
-   <seriesInfo name="Internet-Draft" value="draft-chroboczek-babel-rfc6126bis-00"/>
-   <format type="TXT" target="http://www.ietf.org/internet-drafts/draft-chroboczek-babel-rfc6126bis-00.txt"/>
+   <seriesInfo name="Internet-Draft" value="draft-chroboczek-babel-rfc6126bis-03"/>
+   <format type="TXT" target="http://www.ietf.org/internet-drafts/draft-chroboczek-babel-rfc6126bis-03.txt"/>
 </reference>
 
 <reference anchor="BABEL-EXT"><front>
