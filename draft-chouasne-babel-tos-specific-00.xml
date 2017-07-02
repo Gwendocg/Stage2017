@@ -91,29 +91,25 @@ protocol in a sense made precise in Section 3.3.</t>
 
 <t>ToS-specific routes are routes that are defined by the same informations
 as classic routes, plus a ToS. This extension adds ToS-specific routes to the
-non-ToS-specific routes handled by the original protocol.</t>
+non-ToS-specific routes handled by the original Babel protocol.</t>
 
-<t>This extension doesn't change anything about the handling of non-ToS-specific
-routes. Regarding them, a node implementing this extension will behave exactly
-like a node implementing the original protocol.</t>
+<t>This extension doesn't change the processing of non-ToS-specific
+routes. A node implementing this extension behaves exactly like a node
+implementing the original protocol as far as non-ToS-specific routes are
+concernes.</t>
 
-<t>ToS-specific routes are treated like non-ToS-specific routes,
-with the exception of the recording of the ToS field in the data structures
-and the encoding of Updates and Requests regarding ToS-specific routes. </t>
-
-<t>The encoding of Updates and Requests for ToS-specific routes uses a defined
-sub-TLV. Hence, all Updates and Requests for ToS-specific routes will be ignored
-by node a implementing only the original protocol. Therefore, ToS-specific 
-routes can only be composed of nodes implementing this extension.</t>
-
-<t>Origins of ToS-specific routes MUST be sources. They should first announce
-routes to themselves with any ToS that may be relevant. Routes with ToS get
-then filtered by nodes with this extension if they can not provide a certain
-type of service.</t>
+<t>ToS-specific routes are treated analogously to non-ToS-specific routes,
+except for an additional ToS field in a number of data structures (<xref
+target="data-structures"/>) and in the encoding of Update and Request
+TLVs, which are augmented with a sub-TLV carrying the ToS.  This sub-TLV
+has the mandatory bit set (<xref target="BABEL"/> Section 4.4), and hence,
+Updates and Requests for ToS-specific routes will be ignored by nodes
+implementing only the original protocol.  Therefore, ToS-specific routes
+can only consist of a sequence of nodes implementing this extension.</t>
 
 </section>
 
-<section title="Data Structures">
+<section title="Data Structures" anchor="data-structures">
 
 <t>An implementation of Babel that implements this extension needs to add a
 ToS field to a number of data structures it maintains.</t>
