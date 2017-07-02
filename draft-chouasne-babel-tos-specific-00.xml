@@ -152,10 +152,10 @@ non-ToS-specific Update, Route Request and Seqno Request.</t>
 <t>The ToS sub-TLV is defined as follow:</t>
 
 <figure><artwork><![CDATA[
- 0                   1                   2        
- 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4
+0                   1                   2        
+0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|  Type  = TBD  |    Length     |    ToS    |0|0|
+|  Type  = TBD  |    Length     |     ToS       |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ]]></artwork></figure>
 
@@ -165,7 +165,8 @@ non-ToS-specific Update, Route Request and Seqno Request.</t>
 <t hangText="Type">Set to TBD to indicate a ToS-specific mandatory sub-TLV..</t>
 <t hangText="Length">The length of the body, exclusive of the Type and Length
              fields. It MUST be set to 1.</t>
-<t hangText="ToS">The ToS value of the ToS-specific route</t>
+<t hangText="ToS">The ToS value of the ToS-specific route.  This MUST be
+a multiple of 4 (i.e. the two least-significant bits MUST be 0).</t>
 </list>
 </t>
 <t>The value TBD has the mandatory bit set to 1 and this sub-TLV must
