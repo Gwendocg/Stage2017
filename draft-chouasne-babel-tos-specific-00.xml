@@ -177,7 +177,6 @@ therefore be handled in accordance with Section 4.4 of <xref target="BABEL"/>. <
 <section title="ToS-specific Messages">
 
 <t>This section describes the handling of ToS-specific messages.</t>
-<t>Compression is as described in Section 4.5 of the original protocol <xref target="BABEL"/></t>
 
 <section title="Updates">
 
@@ -236,7 +235,8 @@ and other versions of Babel.</t>
 
 <t>Several interpretations have been defined for the ToS field. </t>
 
-<t>The ToS field is opaque to this extension. Hence, it is compatible with all 
+<t>This extension ignores the last two bits of the field, while the first 6 bits
+of the ToS field are opaque to this extension. Hence, it is compatible with all 
 extensions that don't use the last two bits of the field. This is the case of
 all interpretations known to us. In particular,
 it is compatible with the Differentiated Service Field interpretation (DSCP),
@@ -246,6 +246,8 @@ and the ECN protocol, described in RFC 3168.</t>
 <t>In the case of the DSCP interpretation, one must note that a packet 
 with a DSCP value will follow the route with the ToS being four times
 this value.</t>
+
+<t>Details on how packets are forwarded are provided in Section 3.5.</t>
 
 </section>
 
@@ -304,34 +306,28 @@ indefinitely, as shown in the figure below.</t>
 
 <section title="Forwarding Behavior">
 
-<t>When a packet for an address A arrives to a node, it may match several routes,
-and the node MUST choose the most specific one.</t>
+<t>When a packet for an address A arrives to a node, it may match several routes.
+The node MUST choose the route with the destination-first ordering. </t>
 
-<t>However, one needs to define what is the most specific route between
-one with a prefix including A but no ToS, and one with a 
-less specific prefix, and the ToS required by the packet.</t>
-
-<t>It is necessary that all routers use the same priority rules between 
-destination and ToS to avoid creating routing loops.</t>
-
-<t>A Babel implementation with this extension MUST choose the route with the 
-destination-first ordering. This ordering first considers the routes with
+<t>This ordering considers first the routes with
 the most specific prefixes, and then chooses among them the one with the
-ToS of the packet. If it doesn't exist, then it gradually considers the
+ToS of the packet. If it doesn't exist, it gradually considers the
 routes with the less specific prefixes, until it finds one with the required
-ToS. </t>
+ToS. If it doesn't find any, it uses the most specific route without ToS. If there is
+no such route, the packet is dropped.</t>
 
-<t>This means that a Babel implementation of this extension must ensure that
+<t>When a ToS-specific route is retracted while the router has another non-ToS-specific route, 
+packets should follow this non-ToS-specific route as fast as possible, 
+to avoid more delay. Hence, it is RECOMMENDED to use the algorithm described 
+in Section 3.5.5 of <xref target="BABEL"/></t>
+
+<t>A Babel implementation of this extension must ensure that
 lower layers observe these semantics. If they don't, 
 the implementation MUST disambiguate the routing tables by using a suitable
 algorithm (for example the algorithm of M. Boutier <xref target="SS-ROUTING"/>).</t>
 
-<t>If a router doesn't have a route with a matching ToS for a packet, 
-the packet should follow the non-ToS-specific route. When a ToS-specific
-route is retracted while the router has another non-ToS-specific route, 
-packets should follow this non-ToS-specific route as fast as possible, 
-to avoid more delay. Hence, it is RECOMMENDED to use the algorithm described 
-in Section 3.5.5 of <xref target="BABEL"/></t>
+<t>It may occur that the Forwarding Plane can not handle some ToS values.
+In this case, routes with these values should not be selected.</t>
 
 </section>
 
