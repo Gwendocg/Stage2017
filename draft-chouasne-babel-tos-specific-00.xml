@@ -309,15 +309,15 @@ Updates and Requests advertising source-and-ToS-specific routes MUST be sent
 with both the source sub-TLV and the ToS sub-TLV.</t>
 
 <t>When a source-and-ToS-specific packet arrives to a node implementing the
-source-and-ToS-specific routing, the node MUST choose the route with the most
-specific matching prefix, among groups in this order:
+source-and-ToS-specific routing, the node considers routes with the most
+specific matching prefix. Among these, it prefers in this order:
 <list>
 <t>the route with the same source and ToS as the packet</t>
 <t>the route with the same source as the packet and no ToS</t>
 <t>the route with the same ToS as the packet but no source</t>
 <t>the route with no source and no ToS</t>
 </list>
-If no such route exists, the packet is dropped.
+If no route with a matching prefix exists, the packet is dropped.
 </t>
 
 </section>
@@ -345,7 +345,7 @@ routing tables by using a suitable algorithm (for example the algorithm of M.
 Boutier <xref target="SS-ROUTING"/>).</t>
 
 <t>It may occur that the Forwarding Plane can not handle some ToS values. In
-this case, routes with these values should not be selected.</t>
+this case, routes with these values as ToS should not be selected.</t>
 
 </section>
 
