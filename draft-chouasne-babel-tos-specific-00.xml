@@ -6,7 +6,7 @@
 <?rfc symrefs="yes"?>
 <?rfc sortrefs="yes" ?>
 <?rfc compact="yes" ?>
-<rfc category="exp" docName="rfc-tos-specific"
+<rfc category="exp" docName="draft-chouasne-babel-tos-specific-00"
 ipr="trust200902" updates="6126">
 <front>
 <title>TOS-Specific Routing in Babel</title>
@@ -37,7 +37,7 @@ ipr="trust200902" updates="6126">
 </address>
 </author>
 
-<date day="2" month="July" year="2017"/>
+<date day="3" month="July" year="2017"/>
 
 <abstract> <t>This document describes an extension to the Babel routing protocol
 to support TOS-specific routing. This version is using mandatory sub-TLVs.</t>
