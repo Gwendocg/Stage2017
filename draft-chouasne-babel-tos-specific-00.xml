@@ -113,9 +113,11 @@ field to a number of data structures it maintains.</t>
 <section title="The Source Table">
 
 <t>The source table maintained by any Babel node, as described in <xref
-target="BABEL"/>, Section 3.2.4, is extended with the following field: <list
-style="symbols"> <t>the ToS specifying the ToS of packets to which this entry
-applies.</t> </list></t>
+target="BABEL"/>, Section 3.2.4, is extended with the following field:
+<list style="symbols">
+<t>the ToS specifying the ToS of packets to which this entry applies.</t>
+</list>
+</t>
 
 </section>
 
@@ -123,8 +125,11 @@ applies.</t> </list></t>
 
 <t>The table of pending requests, maintained by any Babel node, as described in
 <xref target="BABEL"/>, Section 3.2.4, is extended with the following field:
-<list style="symbols"> <t>the ToS being requested.</t> </list></t> <t>The table
-is now indexed by (prefix, ToS) pairs.</t>
+<list style="symbols">
+<t>the ToS being requested.</t>
+</list>
+</t> 
+<t>The table is now indexed by (prefix, ToS) pairs.</t>
 
 </section>
 
@@ -144,21 +149,26 @@ non-ToS-specific Update, Route Request and Seqno Request.</t>
 
 <t>The ToS sub-TLV is defined as follow:</t>
 
-<figure><artwork><![CDATA[ 0                   1                   2        0 1
-2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+ |  Type  = TBD  |    Length
-|     ToS       | +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+<figure><artwork><![CDATA[
+0                   1                   2        
+0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|  Type  = TBD  |    Length     |     ToS       |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ]]></artwork></figure>
 
 <t>Fields :
 
-<list style="hanging" hangIndent="10"> <t hangText="Type">Set to TBD to indicate
-a ToS-specific mandatory sub-TLV..</t> <t hangText="Length">The length of the
-body, exclusive of the Type and Length fields. It MUST be set to 1.</t> <t
-hangText="ToS">The ToS value of the ToS-specific route. This MUST be a multiple
-of 4 (i.e. the two least-significant bits MUST be 0).</t> </list> </t> <t>The
-value TBD has the mandatory bit set to 1 and this sub-TLV must therefore be
-handled in accordance with Section 4.4 of <xref target="BABEL"/>. </t>
+<list style="hanging" hangIndent="10">
+<t hangText="Type">Set to TBD to indicate a ToS-specific mandatory sub-TLV..</t>
+<t hangText="Length">The length of the body, exclusive of the Type and Length
+fields. It MUST be set to 1.</t> 
+<t hangText="ToS">The ToS value of the ToS-specific route. This MUST be a
+multiple of 4 (i.e. the two least-significant bits MUST be 0).</t>
+</list>
+</t>
+<t>The value TBD has the mandatory bit set to 1 and this sub-TLV must therefore
+be handled in accordance with Section 4.4 of <xref target="BABEL"/>. </t>
 
 </section>
 
@@ -273,15 +283,42 @@ next-hop for the matching packets.</t> <t>When a packet with ToS t arrives to A
 or B, it will travel between A and B indefinitely, as shown in the figure
 below.</t>
 
-<figure><artwork><![CDATA[ (P)            (P) -->            <-- ----------- A
------------------ B ----------- <-- (P, t) ]]></artwork></figure>
+<figure><artwork><![CDATA[
+             (P)            (P)
+             -->            <--
+----------- A ----------------- B -----------
+        <--
+      (P, t)
+]]></artwork></figure>
 
 
 </section>
 
 <section title="Interaction with other known extensions">
 
-<t>[TODO : a ecrire, mais a definir avant]</t>
+<t>To this day, the only extension to the Babel protocol is the source-specific
+routing extension, defined in <xref target="SS-ROUTING"/>.</t>
+
+<t>The ToS-specific routing extension is compatible with the source-specific
+extension. A node implementing ToS-specific routing and source-specific routing
+handles ToS-specific routes and source-specific routes. To achieve this, data
+structures are extended with a ToS field and a source field. </t>
+
+<t>Additionally, it MAY handle source-and-ToS-specific routes. In this case,
+Updates and Requests advertising source-and-ToS-specific routes MUST be sent
+with both the source sub-TLV and the ToS sub-TLV.</t>
+
+<t>When a source-and-ToS-specific packet arrives to a node implementing the
+source-and-ToS-specific routing, the node MUST choose the route with the most
+specific matching prefix, among groups in this order:
+<list>
+<t>the route with the same source and ToS as the packet</t>
+<t>the route with the same source as the packet and no ToS</t>
+<t>the route with the same ToS as the packet but no source</t>
+<t>the route with no source and no ToS</t>
+</list>
+If no such route exists, the packet is dropped.
+</t>
 
 </section>
 
@@ -291,12 +328,9 @@ below.</t>
 routes. The node MUST choose the route with the destination-first ordering.
 </t>
 
-<t>This ordering considers first the routes with the most specific prefixes, and
-then chooses among them the one with the ToS of the packet. If it doesn't exist,
-it gradually considers the routes with the less specific prefixes, until it
-finds one with the required ToS. If it doesn't find any, it uses the most
-specific route without ToS. If there is no such route, the packet is dropped.
-</t>
+<t>This ordering considers first the routes with the most specific prefix and
+the ToS of the packet. If no such route exists, it uses the most specific route
+without ToS. If there is no such route, the packet is dropped.</t>
 
 <t>When a ToS-specific route is retracted while the router has another
 non-ToS-specific route, packets should follow this non-ToS-specific route as
