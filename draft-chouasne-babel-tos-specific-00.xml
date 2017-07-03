@@ -39,9 +39,8 @@ ipr="trust200902" updates="6126">
 
 <date day="2" month="July" year="2017"/>
 
-<abstract>
-<t>This document describes an extension to the Babel routing protocol to
-support TOS-specific routing. This version is using mandatory sub-TLVs.</t>
+<abstract> <t>This document describes an extension to the Babel routing protocol
+to support TOS-specific routing. This version is using mandatory sub-TLVs.</t>
 
 
 </abstract>
@@ -52,33 +51,31 @@ support TOS-specific routing. This version is using mandatory sub-TLVs.</t>
 
 <section title="Introduction and background">
 
-<t>The Type of Service (ToS) or Differentiated Services Code Point (DSCP)
-is a field of the IPv4 and IPv6 headers that can be used to request
-different per-hop behaviour when forwarding IP packets with identical
-source and destination. The most common application of the ToS field is
-to request different queueing policies (priority, drop probability, etc.)
-from an AQM.</t>
+<t>The Type of Service (ToS) or Differentiated Services Code Point (DSCP) is a
+field of the IPv4 and IPv6 headers that can be used to request different per-hop
+behaviour when forwarding IP packets with identical source and destination. The
+most common application of the ToS field is to request different queueing
+policies (priority, drop probability, etc.) from an AQM.</t>
 
 <t>A slightly less common application of the ToS field is to take it into
 account in addition to the destination address when performing a routing
-decision.  For example, a router that has a low-latency default route with
-high monetary cost might announce it with a "low-latency" ToS, and thus
-avoid carrying ordinary best-effort traffic over the expensive route.
-A router that performs ToS-specific routing maintains a routing table
-which instead of being merely indexed by destination prefixes is indexed
-by pairs of a prefix and a ToS value.  In order to be routed according to
-a given entry in the routing table, a packet must match not only the
-destination prefix but also the ToS value.  ToS-specific forwarding is
-described in more detail in Section 3.5.</t>
+decision. For example, a router that has a low-latency default route with high
+monetary cost might announce it with a "low-latency" ToS, and thus avoid
+carrying ordinary best-effort traffic over the expensive route. A router that
+performs ToS-specific routing maintains a routing table which instead of being
+merely indexed by destination prefixes is indexed by pairs of a prefix and a ToS
+value. In order to be routed according to a given entry in the routing table, a
+packet must match not only the destination prefix but also the ToS value.
+ToS-specific forwarding is described in more detail in Section 3.5.</t>
 
-<t>Just like ordinary routes, ToS-specific routes can be installed
-manually but are more commonly installed by a dynamic routing protocol.
-This document specifies an extension to the Babel routing protocol <xref target="BABEL"/>
-that allows it to carry ToS-specific routes. This extension considers the
-ToS field as an opaque value that is only compared for equality, but
-ignores the two bits that have been reserved for Explicit Congestion
-Notification (ECN) [RFC3168], and is therefore compatible with the
-defintion of the ToS field used by DSCP [DSCP].</t>
+<t>Just like ordinary routes, ToS-specific routes can be installed manually but
+are more commonly installed by a dynamic routing protocol. This document
+specifies an extension to the Babel routing protocol <xref target="BABEL"/> that
+allows it to carry ToS-specific routes. This extension considers the ToS field
+as an opaque value that is only compared for equality, but ignores the two bits
+that have been reserved for Explicit Congestion Notification (ECN) [RFC3168],
+and is therefore compatible with the defintion of the ToS field used by DSCP
+[DSCP].</t>
 
 <t>The extended protocol remains interoperable with the unextended Babel
 protocol in a sense made precise in Section 3.3.</t>
@@ -89,49 +86,45 @@ protocol in a sense made precise in Section 3.3.</t>
 
 <section title="Conceptual Description">
 
-<t>ToS-specific routes are routes that are defined by the same informations
-as classic routes, plus a ToS. This extension adds ToS-specific routes to the
+<t>ToS-specific routes are routes that are defined by the same informations as
+classic routes, plus a ToS. This extension adds ToS-specific routes to the
 non-ToS-specific routes handled by the original Babel protocol.</t>
 
-<t>This extension doesn't change the processing of non-ToS-specific
-routes. A node implementing this extension behaves exactly like a node
-implementing the original protocol as far as non-ToS-specific routes are
-concernes.</t>
+<t>This extension doesn't change the processing of non-ToS-specific routes. A
+node implementing this extension behaves exactly like a node implementing the
+original protocol as far as non-ToS-specific routes are concernes.</t>
 
 <t>ToS-specific routes are treated analogously to non-ToS-specific routes,
 except for an additional ToS field in a number of data structures (<xref
-target="data-structures"/>) and in the encoding of Update and Request
-TLVs, which are augmented with a sub-TLV carrying the ToS.  This sub-TLV
-has the mandatory bit set (<xref target="BABEL"/> Section 4.4), and hence,
-Updates and Requests for ToS-specific routes will be ignored by nodes
-implementing only the original protocol.  Therefore, ToS-specific routes
-can only consist of a sequence of nodes implementing this extension.</t>
+target="data-structures"/>) and in the encoding of Update and Request TLVs,
+which are augmented with a sub-TLV carrying the ToS. This sub-TLV has the
+mandatory bit set (<xref target="BABEL"/> Section 4.4), and hence, Updates and
+Requests for ToS-specific routes will be ignored by nodes implementing only the
+original protocol. Therefore, ToS-specific routes can only consist of a
+sequence of nodes implementing this extension.</t>
 
 </section>
 
 <section title="Data Structures" anchor="data-structures">
 
-<t>An implementation of Babel that implements this extension needs to add
-a ToS field to a number of data structures it maintains.</t>
+<t>An implementation of Babel that implements this extension needs to add a ToS
+field to a number of data structures it maintains.</t>
 
 <section title="The Source Table">
 
 <t>The source table maintained by any Babel node, as described in <xref
-target="BABEL"/>, Section 3.2.4, is extended with the following field:
-<list style="symbols">
-<t>the ToS specifying the ToS of packets to which this entry applies.</t>
-</list></t>
+target="BABEL"/>, Section 3.2.4, is extended with the following field: <list
+style="symbols"> <t>the ToS specifying the ToS of packets to which this entry
+applies.</t> </list></t>
 
 </section>
 
 <section title="The Table of Pending Requests">
 
-<t>The table of pending requests, maintained by any Babel node, as described in 
+<t>The table of pending requests, maintained by any Babel node, as described in
 <xref target="BABEL"/>, Section 3.2.4, is extended with the following field:
-<list style="symbols">
-<t>the ToS being requested.</t>
-</list></t>
-<t>The table is now indexed by (prefix, ToS) pairs.</t>
+<list style="symbols"> <t>the ToS being requested.</t> </list></t> <t>The table
+is now indexed by (prefix, ToS) pairs.</t>
 
 </section>
 
@@ -140,37 +133,32 @@ target="BABEL"/>, Section 3.2.4, is extended with the following field:
 <section title="ToS-specific sub-TLV" anchor="encoding">
 
 <t>This extension defines a new sub-TLV that adds a ToS field to a Babel packet.
-It turns regular Updates, Route Requests and Seqno Requests into ToS-specific 
+It turns regular Updates, Route Requests and Seqno Requests into ToS-specific
 Updates, Route Requests and Seqno Requests. Other TLVs MUST NOT be sent with
-this sub-TLV attached. If any are received, they will be silently ignored, 
-as described in Section 4.4 of <xref target="BABEL"/>.</t>
+this sub-TLV attached. If any are received, they will be silently ignored, as
+described in Section 4.4 of <xref target="BABEL"/>.</t>
 
-<t>A node MUST send ToS-specific Update, Route Request and Seqno Request
-if the route they advertise is ToS-specific.  Otherwise, a node MUST send
+<t>A node MUST send ToS-specific Update, Route Request and Seqno Request if the
+route they advertise is ToS-specific. Otherwise, a node MUST send
 non-ToS-specific Update, Route Request and Seqno Request.</t>
 
 <t>The ToS sub-TLV is defined as follow:</t>
 
-<figure><artwork><![CDATA[
-0                   1                   2        
-0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|  Type  = TBD  |    Length     |     ToS       |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+<figure><artwork><![CDATA[ 0                   1                   2        0 1
+2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+ |  Type  = TBD  |    Length
+|     ToS       | +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ]]></artwork></figure>
 
 <t>Fields :
 
-<list style="hanging" hangIndent="10">
-<t hangText="Type">Set to TBD to indicate a ToS-specific mandatory sub-TLV..</t>
-<t hangText="Length">The length of the body, exclusive of the Type and Length
-             fields. It MUST be set to 1.</t>
-<t hangText="ToS">The ToS value of the ToS-specific route.  This MUST be
-a multiple of 4 (i.e. the two least-significant bits MUST be 0).</t>
-</list>
-</t>
-<t>The value TBD has the mandatory bit set to 1 and this sub-TLV must
-therefore be handled in accordance with Section 4.4 of <xref target="BABEL"/>. </t>
+<list style="hanging" hangIndent="10"> <t hangText="Type">Set to TBD to indicate
+a ToS-specific mandatory sub-TLV..</t> <t hangText="Length">The length of the
+body, exclusive of the Type and Length fields. It MUST be set to 1.</t> <t
+hangText="ToS">The ToS value of the ToS-specific route. This MUST be a multiple
+of 4 (i.e. the two least-significant bits MUST be 0).</t> </list> </t> <t>The
+value TBD has the mandatory bit set to 1 and this sub-TLV must therefore be
+handled in accordance with Section 4.4 of <xref target="BABEL"/>. </t>
 
 </section>
 
@@ -181,42 +169,42 @@ therefore be handled in accordance with Section 4.4 of <xref target="BABEL"/>. <
 <section title="Updates">
 
 <t>Whenever a ToS-specific Update is sent by a node implementing this extension,
-the source table MUST be updated as follows : if an entry indexed by
-(prefix, plen, router-id, ToS), exists, it MUST be modified as
-described in section 3.7.3 of <xref target="BABEL"/>. Otherwise, a new 
-entry is created with value (prefix, plen, router-id, ToS, seqno, metric).</t>
+the source table MUST be updated as follows : if an entry indexed by (prefix,
+plen, router-id, ToS), exists, it MUST be modified as described in section 3.7.3
+of <xref target="BABEL"/>. Otherwise, a new entry is created with value (prefix,
+plen, router-id, ToS, seqno, metric).</t>
 
 </section>
 
 <section title="Requests">
 
-<t>Whenever a node implementing this extension sends a ToS-specific Request,
-it MUST add its content as an entry to the Pending Requests Table, as described in section
-3.2.7 of <xref target="BABEL"/>, with the suitable ToS.</t>
+<t>Whenever a node implementing this extension sends a ToS-specific Request, it
+MUST add its content as an entry to the Pending Requests Table, as described in
+section 3.2.7 of <xref target="BABEL"/>, with the suitable ToS.</t>
 
 <section title="Route Requests">
 
-<t>When a node implementing this extension receives a ToS-specific Route
-Request for a prefix (prefix, plen) and a ToS t, it checks its route table for a selected 
-route with this prefix, plen, and with ToS t in the corresponding source. If such a route
-doesn't exist, it MUST send a ToS-specific retraction for that prefix.</t>
+<t>When a node implementing this extension receives a ToS-specific Route Request
+for a prefix (prefix, plen) and a ToS t, it checks its route table for a
+selected route with this prefix, plen, and with ToS t in the corresponding
+source. If such a route doesn't exist, it MUST send a ToS-specific retraction
+for that prefix.</t>
 
-<t>When a node implementing this extension receives a wildcard Route Request, 
-it SHOULD send a full routing table dump, as described in Section 3.8.1.1
-of <xref target="BABEL"/>. Therefore, it SHOULD also dump its ToS-specific routes.</t>
+<t>When a node implementing this extension receives a wildcard Route Request, it
+SHOULD send a full routing table dump, as described in Section 3.8.1.1 of <xref
+target="BABEL"/>. Therefore, it SHOULD also dump its ToS-specific routes.</t>
 
 </section>
 
 <section title="Seqno Requests">
 
-<t>When a node receives a Seqno Request for a prefix (prefix, plen) with
-a ToS-specific sub-TLV with ToS t, it MUST send a ToS-specific update
-with ToS t for a selected route specified by the Plen, Prefix and Source
-ToS field, with either a router-id different from what
-is specified by the Router-Id field, or a Seqno no less than what is
-specified by the Seqno field. If there is no such route in the Route Table,
-it MUST forward the seqno request according to the rules defined in Section
-3.8.1.2 of <xref target="BABEL"/>. </t>
+<t>When a node receives a Seqno Request for a prefix (prefix, plen) with a
+ToS-specific sub-TLV with ToS t, it MUST send a ToS-specific update with ToS t
+for a selected route specified by the Plen, Prefix and Source ToS field, with
+either a router-id different from what is specified by the Router-Id field, or a
+Seqno no less than what is specified by the Seqno field. If there is no such
+route in the Route Table, it MUST forward the seqno request according to the
+rules defined in Section 3.8.1.2 of <xref target="BABEL"/>. </t>
 
 </section>
 
@@ -236,16 +224,15 @@ and other versions of Babel.</t>
 <t>Several interpretations have been defined for the ToS field. </t>
 
 <t>This extension ignores the last two bits of the field, while the first 6 bits
-of the ToS field are opaque to this extension. Hence, it is compatible with all 
+of the ToS field are opaque to this extension. Hence, it is compatible with all
 extensions that don't use the last two bits of the field. This is the case of
-all interpretations known to us. In particular,
-it is compatible with the Differentiated Service Field interpretation (DSCP),
-defined in RFC 2474, the original interpretation described in RFC 791,
-and the ECN protocol, described in RFC 3168.</t>
+all interpretations known to us. In particular, it is compatible with the
+Differentiated Service Field interpretation (DSCP), defined in RFC 2474, the
+original interpretation described in RFC 791, and the ECN protocol, described in
+RFC 3168.</t>
 
-<t>In the case of the DSCP interpretation, one must note that a packet 
-with a DSCP value will follow the route with the ToS being four times
-this value.</t>
+<t>In the case of the DSCP interpretation, one must note that a packet with a
+DSCP value will follow the route with the ToS being four times this value.</t>
 
 <t>Details on how packets are forwarded are provided in Section 3.5.</t>
 
@@ -253,47 +240,41 @@ this value.</t>
 
 <section title="IP version">
 
-<t>This protocol extension is compatible with IPV4 and IPV6. AE fields 
-MUST be filled accordingly, as described in Section 4.1.3 of <xref target="BABEL"/>.</t>
+<t>This protocol extension is compatible with IPV4 and IPV6. AE fields MUST be
+filled accordingly, as described in Section 4.1.3 of <xref target="BABEL"/>.</t>
 
 </section>
 
 <section title="Interaction with non-Tos-specific Babel">
 
-<t>The encoding of ToS-specific Updates and Requests is using a reserved sub-TLV. 
-This means that, as defined in section 4.4 of <xref target="BABEL"/>, they will be ignored 
-by nodes that don't implement this extension, which means that non-ToS-specific nodes
-will not treat ToS-specific routes.</t>
+<t>The encoding of ToS-specific Updates and Requests is using a reserved
+sub-TLV. This means that, as defined in section 4.4 of <xref target="BABEL"/>,
+they will be ignored by nodes that don't implement this extension, which means
+that non-ToS-specific nodes will not treat ToS-specific routes.</t>
 
-<t>In a topology of routers implementing ToS-specific Babel 
-and non-ToS-specific Babel, all packets will reach their destination
-if it is reachable. Non-ToS-specific packets will follow the same routes 
-as if ToS-specific routers were non-ToS-specific routers. ToS-specific packets may
-switch to a non-ToS-specific route if and only if there is no route for
-the required ToS. </t>
+<t>In a topology of routers implementing ToS-specific Babel and non-ToS-specific
+Babel, all packets will reach their destination if it is reachable.
+Non-ToS-specific packets will follow the same routes as if ToS-specific routers
+were non-ToS-specific routers. ToS-specific packets may switch to a
+non-ToS-specific route if and only if there is no route for the required ToS.
+</t>
 
-<t>This extension uses a mandatory bit on each sub-TLV. It is necessary 
-that this bit is set to 1 for all ToS-specific sub-TLV to avoid loops,
-as shown in the following example.</t>
+<t>This extension uses a mandatory bit on each sub-TLV. It is necessary that
+this bit is set to 1 for all ToS-specific sub-TLV to avoid loops, as shown in
+the following example.</t>
 
-<t>Consider two neighboring routers A and B, A implementing the 
-ToS-specific Babel extension, and B implementing just the base Babel 
-protocol. Suppose that A has a ToS-specific route for a prefix P and ToS t.</t>
-<t>B will receive an update from A with this ToS-specific route. Suppose that
-B reads the update TLV but drops the ToS-specific sub-TLV. It will now
-forwards packets for P through A.</t>
-<t>B will then send an update for the route to (P) to A. A will take B as next-hop
-for the matching packets.</t>
-<t>When a packet with ToS t arrives to A or B, it will travel between A and B 
-indefinitely, as shown in the figure below.</t>
+<t>Consider two neighboring routers A and B, A implementing the ToS-specific
+Babel extension, and B implementing just the base Babel protocol. Suppose that A
+has a ToS-specific route for a prefix P and ToS t.</t> <t>B will receive an
+update from A with this ToS-specific route. Suppose that B reads the update TLV
+but drops the ToS-specific sub-TLV. It will now forwards packets for P through
+A.</t> <t>B will then send an update for the route to (P) to A. A will take B as
+next-hop for the matching packets.</t> <t>When a packet with ToS t arrives to A
+or B, it will travel between A and B indefinitely, as shown in the figure
+below.</t>
 
-<figure><artwork><![CDATA[
-             (P)            (P)
-             -->            <--
------------ A ----------------- B -----------
-        <--
-      (P, t)
-]]></artwork></figure>
+<figure><artwork><![CDATA[ (P)            (P) -->            <-- ----------- A
+----------------- B ----------- <-- (P, t) ]]></artwork></figure>
 
 
 </section>
@@ -306,28 +287,29 @@ indefinitely, as shown in the figure below.</t>
 
 <section title="Forwarding Behavior">
 
-<t>When a packet for an address A arrives to a node, it may match several routes.
-The node MUST choose the route with the destination-first ordering. </t>
+<t>When a packet for an address A arrives to a node, it may match several
+routes. The node MUST choose the route with the destination-first ordering.
+</t>
 
-<t>This ordering considers first the routes with
-the most specific prefixes, and then chooses among them the one with the
-ToS of the packet. If it doesn't exist, it gradually considers the
-routes with the less specific prefixes, until it finds one with the required
-ToS. If it doesn't find any, it uses the most specific route without ToS. If there is
-no such route, the packet is dropped.</t>
+<t>This ordering considers first the routes with the most specific prefixes, and
+then chooses among them the one with the ToS of the packet. If it doesn't exist,
+it gradually considers the routes with the less specific prefixes, until it
+finds one with the required ToS. If it doesn't find any, it uses the most
+specific route without ToS. If there is no such route, the packet is dropped.
+</t>
 
-<t>When a ToS-specific route is retracted while the router has another non-ToS-specific route, 
-packets should follow this non-ToS-specific route as fast as possible, 
-to avoid more delay. Hence, it is RECOMMENDED to use the algorithm described 
-in Section 3.5.5 of <xref target="BABEL"/></t>
+<t>When a ToS-specific route is retracted while the router has another
+non-ToS-specific route, packets should follow this non-ToS-specific route as
+fast as possible, to avoid more delay. Hence, it is RECOMMENDED to use the
+algorithm described in Section 3.5.5 of <xref target="BABEL"/></t>
 
-<t>A Babel implementation of this extension must ensure that
-lower layers observe these semantics. If they don't, 
-the implementation MUST disambiguate the routing tables by using a suitable
-algorithm (for example the algorithm of M. Boutier <xref target="SS-ROUTING"/>).</t>
+<t>A Babel implementation of this extension must ensure that lower layers
+observe these semantics. If they don't, the implementation MUST disambiguate the
+routing tables by using a suitable algorithm (for example the algorithm of M.
+Boutier <xref target="SS-ROUTING"/>).</t>
 
-<t>It may occur that the Forwarding Plane can not handle some ToS values.
-In this case, routes with these values should not be selected.</t>
+<t>It may occur that the Forwarding Plane can not handle some ToS values. In
+this case, routes with these values should not be selected.</t>
 
 </section>
 
@@ -338,18 +320,16 @@ In this case, routes with these values should not be selected.</t>
 <t>IANA is instructed to add the following entry to the "Babel sub-TLV type"
 registry:</t>
 
-<texttable>
-<ttcol>Type</ttcol><ttcol>Name</ttcol><ttcol>Reference</ttcol>
-<c>TBD</c><c>ToS-specific TLV</c><c>(this document)</c>
-</texttable>
+<texttable> <ttcol>Type</ttcol><ttcol>Name</ttcol><ttcol>Reference</ttcol>
+<c>TBD</c><c>ToS-specific TLV</c><c>(this document)</c> </texttable>
 
 </section>
 
 <section title="Security considerations">
 
-<t>The extension defined in this protocol defines three new sub-TLVs for
-defined TLVs. This extension doesn't alterate any of the security properties
-of the base protocol.</t>
+<t>The extension defined in this protocol defines three new sub-TLVs for defined
+TLVs. This extension doesn't alterate any of the security properties of the base
+protocol.</t>
 
 </section>
 
@@ -359,29 +339,22 @@ of the base protocol.</t>
 
 <references title="Normative References">
 
-<reference anchor="BABEL">
-   <front>
-      <title>The Babel Routing Protocol</title>
-      <author initials="J" surname="Chroboczek" fullname="Juliusz Chroboczek"><organization/></author>
-      <date month="July" day="8" year="2016"/>
-   </front>
-   <seriesInfo name="Internet-Draft" value="draft-chroboczek-babel-rfc6126bis-03"/>
-   <format type="TXT" target="http://www.ietf.org/internet-drafts/draft-chroboczek-babel-rfc6126bis-03.txt"/>
-</reference>
-</references>
+<reference anchor="BABEL"> <front> <title>The Babel Routing Protocol</title>
+<author initials="J" surname="Chroboczek" fullname="Juliusz
+Chroboczek"><organization/></author> <date month="July" day="8" year="2016"/>
+</front> <seriesInfo name="Internet-Draft"
+value="draft-chroboczek-babel-rfc6126bis-03"/> <format type="TXT"
+target="http://www.ietf.org/internet-drafts/draft-chroboczek-babel-rfc6126bis-03.txt"/>
+</reference> </references>
 
 <references title="Informative References">
 
-<reference anchor="SS-ROUTING">
-<front>
-<title>Source-Specific Routing</title>
-<author initials="M." surname="Boutier" fullname="Matthieu Boutier"/>
-<author initials="J." surname="Chroboczek" fullname="Juliusz Chroboczek"/>
-<date year="2014" month="August"/>
-</front>
-<annotation>In Proc. IFIP Networking 2015.  A slightly earlier version
-is available online from http://arxiv.org/pdf/1403.0445.</annotation>
-</reference>
+<reference anchor="SS-ROUTING"> <front> <title>Source-Specific Routing</title>
+<author initials="M." surname="Boutier" fullname="Matthieu Boutier"/> <author
+initials="J." surname="Chroboczek" fullname="Juliusz Chroboczek"/> <date
+year="2014" month="August"/> </front> <annotation>In Proc. IFIP Networking 2015.
+A slightly earlier version is available online from
+http://arxiv.org/pdf/1403.0445.</annotation> </reference>
 
 </references>
 
