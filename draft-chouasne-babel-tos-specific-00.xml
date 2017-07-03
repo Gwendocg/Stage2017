@@ -328,9 +328,11 @@ If no such route exists, the packet is dropped.
 routes. The node MUST choose the route with the destination-first ordering.
 </t>
 
-<t>This ordering considers first the routes with the most specific prefix and
-the ToS of the packet. If no such route exists, it uses the most specific route
-without ToS. If there is no such route, the packet is dropped.</t>
+<t>This ordering only considers routes that have either no ToS or the Tos of the
+packet. It forwards a packet through the route with the most specific prefix.
+If there are two routes with the same prefix, then one has no ToS and the other
+has the ToS of the packet. The packet is forwarded to the latter. If there is no
+route with a matching prefix, the packet is dropped.</t>
 
 <t>When a ToS-specific route is retracted while the router has another
 non-ToS-specific route, packets should follow this non-ToS-specific route as
