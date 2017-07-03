@@ -92,7 +92,7 @@ non-ToS-specific routes handled by the original Babel protocol.</t>
 
 <t>This extension doesn't change the processing of non-ToS-specific routes. A
 node implementing this extension behaves exactly like a node implementing the
-original protocol as far as non-ToS-specific routes are concernes.</t>
+original protocol as far as non-ToS-specific routes are concerned.</t>
 
 <t>ToS-specific routes are treated analogously to non-ToS-specific routes,
 except for an additional ToS field in a number of data structures (<xref
@@ -153,14 +153,14 @@ non-ToS-specific Update, Route Request and Seqno Request.</t>
 0                   1                   2        
 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|  Type  = TBD  |    Length     |     ToS       |
+|  Type  = TBD  |    Length     |      ToS      |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ]]></artwork></figure>
 
 <t>Fields :
 
 <list style="hanging" hangIndent="10">
-<t hangText="Type">Set to TBD to indicate a ToS-specific mandatory sub-TLV..</t>
+<t hangText="Type">Set to TBD to indicate a ToS-specific mandatory sub-TLV.</t>
 <t hangText="Length">The length of the body, exclusive of the Type and Length
 fields. It MUST be set to 1.</t> 
 <t hangText="ToS">The ToS value of the ToS-specific route. This MUST be a
@@ -233,10 +233,10 @@ and other versions of Babel.</t>
 
 <t>Several interpretations have been defined for the ToS field. </t>
 
-<t>This extension ignores the last two bits of the field, while the first 6 bits
-of the ToS field are opaque to this extension. Hence, it is compatible with all
-extensions that don't use the last two bits of the field. This is the case of
-all interpretations known to us. In particular, it is compatible with the
+<t>This extension ignores the last two bits of the field, while the first six
+bits of the ToS field are opaque to this extension. Hence, it is compatible with
+all extensions that don't use the last two bits of the field. This is the case
+of all interpretations known to us. In particular, it is compatible with the
 Differentiated Service Field interpretation (DSCP), defined in RFC 2474, the
 original interpretation described in RFC 791, and the ECN protocol, described in
 RFC 3168.</t>
@@ -279,7 +279,7 @@ has a ToS-specific route for a prefix P and ToS t.</t> <t>B will receive an
 update from A with this ToS-specific route. Suppose that B reads the update TLV
 but drops the ToS-specific sub-TLV. It will now forwards packets for P through
 A.</t> <t>B will then send an update for the route to (P) to A. A will take B as
-next-hop for the matching packets.</t> <t>When a packet with ToS t arrives to A
+next-hop for the matching packets.</t> <t>When a packet with no ToS arrives to A
 or B, it will travel between A and B indefinitely, as shown in the figure
 below.</t>
 
@@ -303,7 +303,7 @@ structures are extended with a ToS field and a source field. </t>
 
 <t>In principle, a node could handle routes that are both ToS- and
 source-specific. In that case, Updates and Requests advertising
-source-and-ToS-specific routes would need be sent with both the source
+source-and-ToS-specific routes would need to be sent with both the source
 prefix sub-TLV and the ToS sub-TLV, and a route preference ordering for
 source-and-ToS-specific packets would need to be defined. Until such an
 ordering is defined, updates with both the source prefix and ToS sub-TLVs
@@ -318,21 +318,21 @@ routes. The node MUST choose the route with the destination-first ordering.
 </t>
 
 <t>This ordering only considers routes that have either no ToS or the Tos of the
-packet (ignoring the last 2 bits). It forwards a packet through the route with
+packet (ignoring the last two bits). It forwards a packet through the route with
 the most specific prefix. If there are two routes with the same prefix, then one
-of them has no ToS and the other has the ToS of the packet (ignoring the last 2
-bits). The packet is following the latter. If there is no route with a matching
-prefix, the packet is dropped.</t>
+of them has no ToS and the other has the ToS of the packet (ignoring the last
+two bits). The packet is following the latter. If there is no route with a
+matching prefix, the packet is dropped.</t>
 
 <t>When a ToS-specific route is retracted while the router has another
 non-ToS-specific route, packets should fall back to this non-ToS-specific route as
 fast as possible, to avoid more delay. Hence, it is RECOMMENDED to use the
 algorithm described in Section 3.5.5 of <xref target="BABEL"/></t>
 
-<t>A Babel implementation of this extension must ensure that lower layers
-observe these semantics. If they don't, the implementation MUST disambiguate the
-routing tables by using a suitable algorithm (for example the algorithm of
-Boutier <xref target="SS-ROUTING"/>).</t>
+<t>A Babel implementation of this extension must ensure that these semantics are
+observed. If they aren't, the implementation MUST disambiguate the routing
+tables by using a suitable algorithm (for example the algorithm of Boutier
+<xref target="SS-ROUTING"/>).</t>
 
 <t>It may be the case that the forwarding plane cannot handle some ToS values.
 In that case, routes with these values as ToS MUST NOT be selected and therefore
