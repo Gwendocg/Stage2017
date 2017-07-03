@@ -294,31 +294,18 @@ below.</t>
 
 </section>
 
-<section title="Interaction with other known extensions">
-
-<t>To this day, the only extension to the Babel protocol is the source-specific
-routing extension, defined in <xref target="SS-ROUTING"/>.</t>
+<section title="Interaction with the Source-specific routing extension">
 
 <t>The ToS-specific routing extension is compatible with the source-specific
 extension. A node implementing ToS-specific routing and source-specific routing
 handles ToS-specific routes and source-specific routes. To achieve this, data
 structures are extended with a ToS field and a source field. </t>
 
-<t>Additionally, it MAY handle source-and-ToS-specific routes. In this case,
+<t>Additionally, a node MAY handle source-and-ToS-specific routes. In this case,
 Updates and Requests advertising source-and-ToS-specific routes MUST be sent
-with both the source sub-TLV and the ToS sub-TLV.</t>
-
-<t>When a source-and-ToS-specific packet arrives to a node implementing the
-source-and-ToS-specific routing, the node considers routes with the most
-specific matching prefix. Among these, it prefers in this order:
-<list>
-<t>the route with the same source and ToS as the packet</t>
-<t>the route with the same source as the packet and no ToS</t>
-<t>the route with the same ToS as the packet but no source</t>
-<t>the route with no source and no ToS</t>
-</list>
-If no route with a matching prefix exists, the packet is dropped.
-</t>
+with both the source sub-TLV and the ToS sub-TLV, and a route preference
+ordering for source-and-ToS-specific packets MUST be defined. This document
+doesn't define any.</t>
 
 </section>
 
@@ -329,22 +316,23 @@ routes. The node MUST choose the route with the destination-first ordering.
 </t>
 
 <t>This ordering only considers routes that have either no ToS or the Tos of the
-packet. It forwards a packet through the route with the most specific prefix.
-If there are two routes with the same prefix, then one has no ToS and the other
-has the ToS of the packet. The packet is forwarded to the latter. If there is no
-route with a matching prefix, the packet is dropped.</t>
+packet (ignoring the last 2 bits). It forwards a packet through the route with
+the most specific prefix. If there are two routes with the same prefix, then one
+of them has no ToS and the other has the ToS of the packet (ignoring the last 2
+bits). The packet is following the latter. If there is no route with a matching
+prefix, the packet is dropped.</t>
 
 <t>When a ToS-specific route is retracted while the router has another
-non-ToS-specific route, packets should follow this non-ToS-specific route as
+non-ToS-specific route, packets should fall back to this non-ToS-specific route as
 fast as possible, to avoid more delay. Hence, it is RECOMMENDED to use the
 algorithm described in Section 3.5.5 of <xref target="BABEL"/></t>
 
 <t>A Babel implementation of this extension must ensure that lower layers
 observe these semantics. If they don't, the implementation MUST disambiguate the
-routing tables by using a suitable algorithm (for example the algorithm of M.
+routing tables by using a suitable algorithm (for example the algorithm of
 Boutier <xref target="SS-ROUTING"/>).</t>
 
-<t>It may occur that the Forwarding Plane can not handle some ToS values. In
+<t>It may occur that the forwarding plane can not handle some ToS values. In
 this case, routes with these values as ToS should not be selected.</t>
 
 </section>
