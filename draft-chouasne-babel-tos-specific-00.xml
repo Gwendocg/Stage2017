@@ -301,11 +301,13 @@ extension. A node implementing ToS-specific routing and source-specific routing
 handles ToS-specific routes and source-specific routes. To achieve this, data
 structures are extended with a ToS field and a source field. </t>
 
-<t>Additionally, a node MAY handle source-and-ToS-specific routes. In this case,
-Updates and Requests advertising source-and-ToS-specific routes MUST be sent
-with both the source sub-TLV and the ToS sub-TLV, and a route preference
-ordering for source-and-ToS-specific packets MUST be defined. This document
-doesn't define any.</t>
+<t>In principle, a node could handle routes that are both ToS- and
+source-specific. In that case, Updates and Requests advertising
+source-and-ToS-specific routes would need be sent with both the source
+prefix sub-TLV and the ToS sub-TLV, and a route preference ordering for
+source-and-ToS-specific packets would need to be defined. Until such an
+ordering is defined, updates with both the source prefix and ToS sub-TLVs
+MUST NOT be sent, and, if received, MUST be silently dropped.</t>
 
 </section>
 
@@ -332,8 +334,9 @@ observe these semantics. If they don't, the implementation MUST disambiguate the
 routing tables by using a suitable algorithm (for example the algorithm of
 Boutier <xref target="SS-ROUTING"/>).</t>
 
-<t>It may occur that the forwarding plane can not handle some ToS values. In
-this case, routes with these values as ToS should not be selected.</t>
+<t>It may be the case that the forwarding plane cannot handle some ToS values.
+In that case, routes with these values as ToS MUST NOT be selected and therefore
+MUST NOT be announced.</t>
 
 </section>
 
